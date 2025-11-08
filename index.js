@@ -38,14 +38,31 @@ async function run() {
 
         })
 
+        app.get('/freelance', async (req, res) => {
+            const cursor = freelanceCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        app.get('/freelance/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await freelanceCollection.findOne(query);
+            res.send(result);
+        })
+
         app.patch('/freelance/:id', async (req, res) => {
             const id = req.params.id;
             const updatedFreelance = req.body;
             const query = { _id: new ObjectId(id) }
             const update = {
                 $set: {
-                    name: updatedFreelance.name,
-                    price: updatedFreelance.price
+                    title: updatedJob.title,
+                    postedBy: updatedJob.postedBy,
+                    category: updatedJob.category,
+                    summary: updatedJob.summary,
+                    coverImage: updatedJob.coverImage,
+                    userEmail: updatedJob.userEmail
                 }
             }
             const result = await freelanceCollection.updateOne(query, update)
