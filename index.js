@@ -38,6 +38,21 @@ async function run() {
 
         })
 
+        app.patch('/freelance/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedFreelance = req.body;
+            const query = { _id: new ObjectId(id) }
+            const update = {
+                $set: {
+                    name: updatedFreelance.name,
+                    price: updatedFreelance.price
+                }
+            }
+            const result = await freelanceCollection.updateOne(query, update)
+            res.send(result);
+        });
+
+        // Delete
         app.delete('/freelance/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
