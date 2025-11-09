@@ -1,3 +1,6 @@
+
+
+
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -43,6 +46,12 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
+        app.get('/freelance/:email', async (req, res) => {
+            const email = req.params.email;   
+            const query = { userEmail: email };  
+            const result = await freelanceCollection.find(query).toArray();
+            res.send(result);  
+        });
 
         app.get('/freelance/:id', async (req, res) => {
             const id = req.params.id;
@@ -88,4 +97,6 @@ async function run() {
 run().catch(console.dir)
 app.listen(port, () => {
     console.log(`Freelance MarketPlace is running on port: ${port}`)
-})
+});
+
+
