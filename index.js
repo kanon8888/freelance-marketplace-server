@@ -5,9 +5,12 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 3000;
 
+
+
+
 app.use(cors());
 app.use(express.json());
-app.use('/images', express.static('uploads')); 
+app.use('/images', express.static('uploads'));
 
 
 const uri =
@@ -23,16 +26,16 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     const db = client.db("freelancedb");
 
     const freelanceCollection = db.collection("freelance");
     const acceptedTasksCollection = db.collection("acceptedTasks");
 
-    console.log("✅ Connected to MongoDB");
+    console.log("Connected to MongoDB");
 
-   
+
     app.get('/freelance', async (req, res) => {
       const jobs = await freelanceCollection.find().toArray();
       res.send(jobs);
@@ -81,7 +84,7 @@ async function run() {
     });
 
 
-   
+
     app.get("/acceptedTasks", async (req, res) => {
       const userEmail = req.query.userEmail;
 
@@ -93,7 +96,7 @@ async function run() {
       res.send(tasks);
     });
 
-   
+
     app.post("/acceptedTasks", async (req, res) => {
       const task = req.body;
 
@@ -106,13 +109,13 @@ async function run() {
     });
 
     app.post("/acceptedTasks", async (req, res) => {
-  const task = req.body;
-  const result = await acceptedTasksCollection.insertOne(task);
-  res.send(result);
-});
+      const task = req.body;
+      const result = await acceptedTasksCollection.insertOne(task);
+      res.send(result);
+    });
 
 
-   
+
     app.delete("/acceptedTasks/:id", async (req, res) => {
       const id = req.params.id;
 
